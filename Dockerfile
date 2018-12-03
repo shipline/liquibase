@@ -26,13 +26,16 @@ RUN set -x \
     && [ "$JAVA_HOME" = "$(docker-java-home)" ]
 
 RUN apk --no-cache add --virtual .build-dependencies curl tar gzip
+RUN apk --no-cache add bash
 
-RUN curl -LO https://github.com/liquibase/liquibase/releases/download/liquibase-parent-3.6.2/liquibase-3.6.2-bin.tar.gz
-RUN mkdir liquibase-3.6.2-bin \
+ENV LIQUIBASE_VERSION=3.5.5
+
+RUN curl -LO https://github.com/liquibase/liquibase/releases/download/liquibase-parent-$LIQUIBASE_VERSION/liquibase-$LIQUIBASE_VERSION-bin.tar.gz
+RUN mkdir liquibase-$LIQUIBASE_VERSION-bin \
     && mkdir /opt \
-    && tar -xvzf liquibase-3.6.2-bin.tar.gz -C liquibase-3.6.2-bin \
-    && rm -f liquibase-3.6.2-bin.tar.gz \
-    && mv liquibase-3.6.2-bin /opt/liquibase \
+    && tar -xvzf liquibase-$LIQUIBASE_VERSION-bin.tar.gz -C liquibase-$LIQUIBASE_VERSION-bin \
+    && rm -f liquibase-$LIQUIBASE_VERSION-bin.tar.gz \
+    && mv liquibase-$LIQUIBASE_VERSION-bin /opt/liquibase \
     && chmod +x /opt/liquibase/liquibase \
     && ln -s /opt/liquibase/liquibase /usr/local/bin/
 
